@@ -8,6 +8,8 @@ from discord.commands import Option
 
 intents = discord.Intents.all()
 
+GUILD_ID = 636962982286589952
+
 # Bot activities
 name_constant = "/help"
 game_activity = discord.Game(name=name_constant)
@@ -116,12 +118,12 @@ async def on_message(message: discord.Message):
         pass
 
 
-@bot.slash_command(description="Ping-Pong game", guild_ids=[636962982286589952])
+@bot.slash_command(description="Ping-Pong game", guild_ids=[GUILD_ID])
 async def ping(ctx: discord.ApplicationContext):
     await ctx.respond(f"Pong! {random.randrange(0, 1000)} ms")
 
 
-@bot.slash_command(name='hi', aliases=['hello', 'yo'], description="Greets the user", guild_ids=[636962982286589952])
+@bot.slash_command(name='hi', aliases=['hello', 'yo'], description="Greets the user", guild_ids=[GUILD_ID])
 async def _hi(ctx: discord.ApplicationContext):
     """
         A simple command which says hi to the author.
@@ -129,7 +131,7 @@ async def _hi(ctx: discord.ApplicationContext):
     await ctx.respond(f"Hi {ctx.author.mention}!")
 
 
-@bot.slash_command(description="Deletes the messages from channel", guild_ids=[636962982286589952])
+@bot.slash_command(description="Deletes the messages from channel", guild_ids=[GUILD_ID])
 @commands.is_owner()
 async def clear(
     ctx: discord.ApplicationContext,
@@ -160,7 +162,7 @@ async def clear_error(ctx: discord.ApplicationContext, error):
         raise error
 
 
-@bot.slash_command(description="Turns off the bot", guild_ids=[636962982286589952])
+@bot.slash_command(description="Turns off the bot", guild_ids=[GUILD_ID])
 @commands.is_owner()
 async def logout(ctx: discord.ApplicationContext):
     """
@@ -181,7 +183,7 @@ async def logout_error(ctx: discord.ApplicationContext, error):
         raise error
 
 
-@bot.slash_command(description="Shows bot information", guild_ids=[636962982286589952])
+@bot.slash_command(description="Shows bot information", guild_ids=[GUILD_ID])
 async def stats(ctx: discord.ApplicationContext):
     """
         A usefull command that displays bot statistics.
@@ -207,7 +209,7 @@ async def stats(ctx: discord.ApplicationContext):
     await ctx.respond(embed=embed)
 
 
-@bot.slash_command(description="Sends information to specific channel.", guild_ids=[636962982286589952])
+@bot.slash_command(description="Sends information to specific channel.", guild_ids=[GUILD_ID])
 async def source(
         ctx: discord.ApplicationContext,
         info: Option(str, "Enter your information"),
@@ -219,7 +221,7 @@ async def source(
         embed = discord.Embed(title=topic, description='\uFEFF',
                               colour=ctx.author.colour)
         embed.add_field(name="Information", value=info)
-        guild = bot.get_guild(636962982286589952)
+        guild = bot.get_guild(GUILD_ID)
         for channel in guild.channels:
             if channel.name == temp:
                 await channel.send(embed=embed)
@@ -230,17 +232,17 @@ async def source(
         await ctx.respond("You are not able to write messages in " + temp + " channel!")
 
 
-@bot.slash_command(description="Prints all available channels", guild_ids=[636962982286589952])
+@bot.slash_command(description="Prints all available channels", guild_ids=[GUILD_ID])
 async def channels(ctx: discord.ApplicationContext):
     output = "**Channels list:**\n|"
-    guild = bot.get_guild(636962982286589952)
+    guild = bot.get_guild(GUILD_ID)
     for channel in guild.channels:
         if channel.name not in lists.BLOCKED_CHANNELS:
             output += channel.name+"|"
     await ctx.respond(output)
 
 
-@bot.slash_command(name="help", description="Sends all available commands", guild_ids=[636962982286589952])
+@bot.slash_command(name="help", description="Sends all available commands", guild_ids=[GUILD_ID])
 async def help(ctx: discord.ApplicationContext):
     embed = discord.Embed(title=f'Available Commands:', description='\uFEFF',
                           colour=ctx.author.colour)
